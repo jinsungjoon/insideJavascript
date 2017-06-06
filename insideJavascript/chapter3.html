@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+</body>
+<script>
+/**
+ * 3.자바스크립트 데이터 타입과 연산자
+ * 
+ */
+
+
+/**
+ * 3-1 자바스크립트의 데이터 타입
+ * 기본타입:숫자(Number),문자열(String),불린값(Boolean),undefined,null
+ * 참조타입:객체(Object),배열(Array),함수(Function),정규표현식
+ * 
+ * 자바스크립트는 느슨한 타입 체크언어이다
+ * ex)자바스크립트:var 변수 C:char,int,float 
+ */
+
+ 
+//숫자타입
+var intNum   = 10;
+var floatNum = 0.1;
+
+//문자열 타입
+var singleQuoteStr = 'single quote string';
+var doubleQuoteStr = "double quote string";
+var singleChar     = 'a';
+
+//불린 타입
+var boolVar = true;
+
+//undefined 타입
+var emptyVar;
+
+var nullVar = null;
+console.log(
+	typeof intNum,
+	typeof floatNum,
+	typeof singleQuoteStr,
+	typeof doubleQuoteStr,
+	typeof boolVar,
+	typeof nullVar,
+	typeof emptyVar
+);
+//(출력값) number number string string boolean object undefined
+
+/*
+ * 3-2 자바스크립트 나눗셈 연산
+ */
+ 
+ var num = 5/2;
+ console.log(num);             //(출력값) 2.5
+ console.log(Math.floor(num)); //(출력삽)2
+ 
+/*
+ * 3-3 자바스크립트 문자열 예제
+ * 자바스크립트는 한 번 생성된 문자열은 읽기만 가능하지 수정은 불가능하다;
+ */
+  
+//str 문자열 생성
+var str = 'test';
+console.log(str[0],str[1],str[2],str[3]);//(출력값)test
+ 
+//문자열의 첫 글자를 대문자로 변경?
+str[0] = 'T';
+console.log(str)//(출력값)test
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>
