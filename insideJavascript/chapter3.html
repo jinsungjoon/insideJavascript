@@ -60,7 +60,7 @@ console.log(
  
 /*
  * 3-3 자바스크립트 문자열 예제
- * 자바스크립트는 한 번 생성된 문자열은 읽기만 가능하지 수정은 불가능하다;
+ * 자바스크립트는 한 번 생성된 문자열은 읽기만 가능하지 수정은 불가능하다
  */
   
 //str 문자열 생성
@@ -72,7 +72,18 @@ str[0] = 'T';
 console.log(str)//(출력값)test
 
 
+/*
+ * Array() 생성자 함수
+ * 3-24 Array() 생성자 함수를 통한 배열 생성
+ */
 
+ var foo = new Array(3);
+ console.log(foo);             //(출력값) [undefined,undefined,undefined]
+ console.log(foo.length);      //(출력값) 3
+
+ var bar = new Array(1,2,3);
+ console.log(bar);             //(출력값) [1, 2, 3]
+ console.log(bar.length);      //(출력값) 3
 
 
 
