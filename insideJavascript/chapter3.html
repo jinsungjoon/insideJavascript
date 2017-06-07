@@ -59,8 +59,13 @@ console.log(
  console.log(Math.floor(num)); //(ì¶œë ¥ì‚½)2
  
 /*
+<<<<<<< HEAD
  * 3-3 ìë°”ìŠ¤í¬ë¦½íŠ¸ ë¬¸ìì—´ ì˜ˆì œ
  * ìë°”ìŠ¤í¬ë¦½íŠ¸ëŠ” í•œ ë²ˆ ìƒì„±ëœ ë¬¸ìì—´ì€ ì½ê¸°ë§Œ ê°€ëŠ¥í•˜ì§€ ìˆ˜ì •ì€ ë¶ˆê°€ëŠ¥í•˜ë‹¤;
+=======
+ * 3-3 ÀÚ¹Ù½ºÅ©¸³Æ® ¹®ÀÚ¿­ ¿¹Á¦
+ * ÀÚ¹Ù½ºÅ©¸³Æ®´Â ÇÑ ¹ø »ı¼ºµÈ ¹®ÀÚ¿­Àº ÀĞ±â¸¸ °¡´ÉÇÏÁö ¼öÁ¤Àº ºÒ°¡´ÉÇÏ´Ù
+>>>>>>> branch 'master' of https://github.com/jinsungjoon/insideJavascript.git
  */
   
 //str ë¬¸ìì—´ ìƒì„±
@@ -143,6 +148,18 @@ console.log(foo.full);        //(ì¶œë ¥ê°’) undefined
 console.log(name);             //(ì¶œë ¥ê°’) undefined
 
 
+/*
+ * Array() »ı¼ºÀÚ ÇÔ¼ö
+ * 3-24 Array() »ı¼ºÀÚ ÇÔ¼ö¸¦ ÅëÇÑ ¹è¿­ »ı¼º
+ */
+
+ var foo = new Array(3);
+ console.log(foo);             //(Ãâ·Â°ª) [undefined,undefined,undefined]
+ console.log(foo.length);      //(Ãâ·Â°ª) 3
+
+ var bar = new Array(1,2,3);
+ console.log(bar);             //(Ãâ·Â°ª) [1, 2, 3]
+ console.log(bar.length);      //(Ãâ·Â°ª) 3
 
 /*
  * 3-8 for in ë¬¸ê³¼ ê°ì²´ í”„ë¡œí¼í‹° ì¶œë ¥
@@ -163,6 +180,36 @@ for(var prop in foo){
 //age 30
 //major computer science
 
+ /*
+  * À¯»ç ¹è¿­ °´Ã¼
+  * 3-25 À¯»ç ¹è¿­ °´Ã¼ÀÇ ¹è¿­ ¸Ş¼­µå È£Ãâ
+  */
+
+  var arr = ['bar'];
+  var obj = {
+	  name:'foo',
+	  length:1
+  };
+  
+  arr.push('baz'); //(Ãâ·Â°ª) ['bar','baz']
+
+//   obj.push('baz');                   //(Ãâ·Â°ª) error
+  Array.prototype.push.apply(obj,['baz']); 
+  console.log(obj);                     //(Ãâ·Â°ª) {1: "baz", name: "foo", length: 2}
+  
+  
+  
+  /*
+   * ±âº» Å¸ÀÔ°ú Ç¥ÁØ ¸Ş¼­µå
+   * 3-26 ±âº» Å¸ÀÔ º¯¼ö¿¡¼­ÀÇ ¸Ş¼­µå È£Ãâ
+   */
+
+  //¼ıÀÚ ¸Ş¼­µå È£Ãâ
+  var num = 0.5;
+  console.log(num.toExponential(1)); //(Ãâ·Â°ª) 5.0e-1
+  
+  //¹®ÀÚ¿­ ¸Ş¼­µå È£Ãâ
+  console.log("test".charAt(2));     //(Ãâ·Â°ª) s
 
 /*
  * 3-9 ê°ì²´ í”„ë¡œí¼í‹° ì‚­ì œ
@@ -183,6 +230,21 @@ delete foo;                //(ì¶œë ¥ê°’) foo ê°ì²´ ì‚­ì œ ì‹œë„
 console.log(foo.name);     //(ì¶œë ¥ê°’) foo
 console.dir(foo.name);
 
+  /*
+   * ¿¬»êÀÚ
+   * 3-27 +¿¬»êÀÚ ¿¹Á¦
+   * ´õÇÏ±â ¿¬»ê°ú ¹®ÀÚ¿­ ¿¬°á ¿¬»êÀ» ¼öÇàÇÑ´Ù.
+   */
+
+  var add1 = 1+2;
+  var add2 = 'my' + 'string';
+  var add3 = 1 + 'string';
+  var add4 = 'string' + 2;
+  
+  console.log(add1); //(Ãâ·Â°ª) 3
+  console.log(add2); //(Ãâ·Â°ª) mystring
+  console.log(add3); //(Ãâ·Â°ª) 1string
+  console.log(add4); //(Ãâ·Â°ª) string2
 
 /*
  * 3-10 ë™ì¼í•œ ê°ì²´ë¥¼ ì°¸ì¡°í•˜ëŠ” ë‘ ë³€ìˆ˜ objA ì™€ objB
@@ -236,7 +298,20 @@ changeArg(a, objA);
 console.log(a);   //(ì¶œë ¥ê°’) 100
 console.log(objA);//(ì¶œë ¥ê°’) {value:200} 
 
+  /*
+   * 3-28 typeof ¿¬»êÀÚ
+   * ÇÇ¿¬»êÀÚÀÇ Å¸ÀÔÀ» ¹®ÀÚ¿­ ÇüÅÂ·Î ¸®ÅÏÇÑ´Ù.
+   * ±âº»Å¸ÀÔ ¼ıÀÚ            'number'
+   * ±âº»Å¸ÀÔ ¹®ÀÚ¿­         'string'
+   * ±âº»Å¸ÀÔ ºÒ¸°°ª         'boolean'
+   * ±âº»Å¸ÀÔ null       'object'
+   * ±âº»Å¸ÀÔ undefined  undefined
+   * ÂüÁ¶Å¸ÀÔ °´Ã¼             'object'
+   * ÂüÁ¶Å¸ÀÔ ¹è¿­             'object'
+   * ÂüÁ¶Å¸ÀÔ ÇÔ¼ö             'function'
+   */
 
+<<<<<<< HEAD
 /*
  * í”„ë¡œí† íƒ€ì…(ëª¨ë“  ê°ì²´ëŠ” ìì‹ ì˜ ë¶€ëª¨ ì—­í• ì„ í•˜ëŠ” ê°ì²´ì™€ ì—°ê²°ë˜ì–´ ìˆë‹¤.)
  * 3-12 ê°ì²´ ìƒì„± ë° ì¶œë ¥
@@ -299,8 +374,21 @@ console.log(colorArr[4]);//(ì¶œë ¥ê°’) red
  arr.length=2;
  console.log(arr);   //(ì¶œë ¥ê°’) [0, 1]
  console.log(arr[2]);//(ì¶œë ¥ê°’) undefined
+=======
+   
+   
+   
+   /*
+    * 3-29 ==(µ¿µî) ¿¬»êÀÚ¿Í ===(ÀÏÄ¡)¿¬»êÀÚ
+    * == ¿¬»êÀÚ´Â Å¸ÀÔÀÌ ´Ù¸¦°æ¿ì Å¸ÀÔ º¯È¯À» °ÅÄ£´ÙÀ½ºñ±³
+    * ===¿¬»êÀÚ´Â Å¸ÀÔº¯°æÀ» ÇÏÁö¾Ê°í ºñ±³ÇÑ´Ù.
+    */
+>>>>>>> branch 'master' of https://github.com/jinsungjoon/insideJavascript.git
 
+    console.log(1 =='1');  //(Ãâ·Â°ª) true
+    console.log(1 ==='1'); //(Ãâ·Â°ª) false
 
+<<<<<<< HEAD
  /*
   * ë°°ì—´ í‘œì¤€ ë©”ì„œë“œì™€ length í”„ë¡œí¼í‹°
   * 3-17 push() ë©”ì„œë“œì™€ length í”„ë¡œí¼í‹°
@@ -350,7 +438,14 @@ console.log(colorsObj.length);  //(ì¶œë ¥ê°’) undefined
 //ë°°ì—´ í‘œì¤€ ë©”ì„œë“œ
 colorsArray.push('red'); //['orange','yellow','green','red']
 // colorsObj.push('red');   //Uncaught TypeError: colorsObj.push is not a function
+=======
+    /*
+     * 3-30 !!¿¬»êÀÚ
+     * !!¿¬»êÀÚ´Â ÇÇ¿¬»êÀÚ¸¦ ºÒ¸°°ªÀ¸·Î º¯È¯ÇÑ´Ù.
+     */
+>>>>>>> branch 'master' of https://github.com/jinsungjoon/insideJavascript.git
 
+<<<<<<< HEAD
 
 /*
  * 3-19 ë°°ì—´ì˜ í”„ë¡œí† íƒ€ì… ê°ì²´ì˜ í”„ë¡œí† íƒ€ì… ë¹„êµ
@@ -433,5 +528,19 @@ console.log(arr);         //(ì¶œë ¥ê°’) ["zero", "one", "two", "red", color: "bl
  
  
  
+=======
+	console.log(!!0);        //(Ãâ·Â°ª) false
+	console.log(!!1);        //(Ãâ·Â°ª) true
+	console.log(!!'string'); //(Ãâ·Â°ª) true
+	console.log(!!'');       //(Ãâ·Â°ª) false
+	console.log(!!true);     //(Ãâ·Â°ª) true
+	console.log(!!false);    //(Ãâ·Â°ª) false
+	console.log(!!null);     //(Ãâ·Â°ª) false
+	console.log(!!undefined);//(Ãâ·Â°ª) false
+	console.log(!!{});       //(Ãâ·Â°ª) true
+	console.log(!![1,2,3]);  //(Ãâ·Â°ª) true
+
+
+>>>>>>> branch 'master' of https://github.com/jinsungjoon/insideJavascript.git
 </script>
 </html>
