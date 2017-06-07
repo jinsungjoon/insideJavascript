@@ -121,6 +121,7 @@ console.log(str)//(출력값)test
   /*
    * 연산자
    * 3-27 +연산자 예제
+   * 더하기 연산과 문자열 연결 연산을 수행한다.
    */
 
   var add1 = 1+2;
@@ -134,13 +135,46 @@ console.log(str)//(출력값)test
   console.log(add4); //(출력값) string2
 
 
+  /*
+   * 3-28 typeof 연산자
+   * 피연산자의 타입을 문자열 형태로 리턴한다.
+   * 기본타입 숫자            'number'
+   * 기본타입 문자열         'string'
+   * 기본타입 불린값         'boolean'
+   * 기본타입 null       'object'
+   * 기본타입 undefined  undefined
+   * 참조타입 객체             'object'
+   * 참조타입 배열             'object'
+   * 참조타입 함수             'function'
+   */
 
+   
+   
+   
+   /*
+    * 3-29 ==(동등) 연산자와 ===(일치)연산자
+    * == 연산자는 타입이 다를경우 타입 변환을 거친다음비교
+    * ===연산자는 타입변경을 하지않고 비교한다.
+    */
 
+    console.log(1 =='1');  //(출력값) true
+    console.log(1 ==='1'); //(출력값) false
 
+    /*
+     * 3-30 !!연산자
+     * !!연산자는 피연산자를 불린값으로 변환한다.
+     */
 
-
-
-
+	console.log(!!0);        //(출력값) false
+	console.log(!!1);        //(출력값) true
+	console.log(!!'string'); //(출력값) true
+	console.log(!!'');       //(출력값) false
+	console.log(!!true);     //(출력값) true
+	console.log(!!false);    //(출력값) false
+	console.log(!!null);     //(출력값) false
+	console.log(!!undefined);//(출력값) false
+	console.log(!!{});       //(출력값) true
+	console.log(!![1,2,3]);  //(출력값) true
 
 
 </script>
