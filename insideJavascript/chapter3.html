@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+</body>
+<script>
+/**
+ * 3.자바스크립트 데이터 타입과 연산자
+ * 
+ */
+
+
+/**
+ * 3-1 자바스크립트의 데이터 타입
+ * 기본타입:숫자(Number),문자열(String),불린값(Boolean),undefined,null
+ * 참조타입:객체(Object),배열(Array),함수(Function),정규표현식
+ * 
+ * 자바스크립트는 느슨한 타입 체크언어이다
+ * ex)자바스크립트:var 변수 C:char,int,float 
+ */
+
+ 
+//숫자타입
+var intNum   = 10;
+var floatNum = 0.1;
+
+//문자열 타입
+var singleQuoteStr = 'single quote string';
+var doubleQuoteStr = "double quote string";
+var singleChar     = 'a';
+
+//불린 타입
+var boolVar = true;
+
+//undefined 타입
+var emptyVar;
+
+var nullVar = null;
+console.log(
+	typeof intNum,
+	typeof floatNum,
+	typeof singleQuoteStr,
+	typeof doubleQuoteStr,
+	typeof boolVar,
+	typeof nullVar,
+	typeof emptyVar
+);
+//(출력값) number number string string boolean object undefined
+
+/*
+ * 3-2 자바스크립트 나눗셈 연산
+ */
+ 
+ var num = 5/2;
+ console.log(num);             //(출력값) 2.5
+ console.log(Math.floor(num)); //(출력삽)2
+ 
+/*
+ * 3-3 자바스크립트 문자열 예제
+ * 자바스크립트는 한 번 생성된 문자열은 읽기만 가능하지 수정은 불가능하다;
+ */
+  
+//str 문자열 생성
+var str = 'test';
+console.log(str[0],str[1],str[2],str[3]);//(출력값)test
+ 
+//문자열의 첫 글자를 대문자로 변경?
+str[0] = 'T';
+console.log(str)//(출력값)test
+
+/*
+ * 3-4 null 타입 변수 체크
+ * null 타입은 Object 이다
+ */
+ 
+ //null 타입 변수 생성
+ var nullVar = null;
+ console.log(typeof nullVar === null);//(출력값)false
+ console.log(nullVar === null);       //(출력값)true;
+
+ /*
+  * 3-5 Object()생성자 함수를 통합 객체 생성
+  */
+
+//Object()를 이용해서 foo 빈 객체 생성
+var foo = new Object();
+
+// foo 객체 프로퍼티 생성
+foo.name   = 'foo';
+foo.age    = 30;
+foo.gender = 'male';
+
+console.log(typeof foo);//(출력값)object
+console.log(foo);       //(출력값){ name:'foo', age:'30', gender:'male'}
+
+
+/*
+ * 3-6 객체 리터럴 방식으로 객체 생성
+ */
+
+var foo = {
+	name:'foo',
+	age:30,
+	gender:'male'
+};
+
+ console.log(typeof foo);//(출력값)object
+ console.log(foo);       //(출력값){ name:'foo', age:'30', gender:'male'}
+
+ /*
+  * 3-7 객체 프로퍼티 읽기/쓰기/갱신
+  * 대괄호([])표기법
+  * 마침표(.)표기법
+  */
+
+var foo = {
+	name:'foo',
+	major:'computer science'
+};
+
+//객체 프로퍼티 읽기
+console.log(foo.name);   //(출력값) foo
+console.log(foo['name']) //(출력값) foo
+console.log(foo.nickname)//(출력값) undefined
+
+//객체 프로퍼티 갱신
+foo.major = 'electronics engineering';
+console.log(foo.major);     //(출력값) electronics engineering
+console.log(foo['major']);  //(출력값) electronics engineering
+
+//객체 프로퍼티 동적 생성
+foo.age = 30;
+console.log(foo.age);       //(출력값) 30
+
+//대괄호 표기법만을 사용해야 할 경우
+foo['full-name'] = 'foo bar';
+console.log(foo['full-name']); //(출력값) foo bar
+console.log(foo.full-name);   //(출력값) NaN  -연산자가 있어서 대괄호 표기법만을 사용해야한다.
+console.log(foo.full);        //(출력값) undefined
+console.log(name);             //(출력값) undefined
+
+
+
+/*
+ * 3-8 for in 문과 객체 프로퍼티 출력
+ */
+
+var foo = {
+	name:'foo',
+	age:30,
+	major:'computer science'
+};
+
+//for in 문을 이용한 객체 프로퍼티 출력
+for(var prop in foo){
+	console.log(prop,foo[prop]);
+}
+//출력결과
+//name foo
+//age 30
+//major computer science
+
+
+/*
+ * 3-9 객체 프로퍼티 삭제
+ * delete 연산자는 프로퍼티만 삭제할수 있다.
+ */
+ 
+ //객체 리터럴을 통한 foo 객체 생성
+ var foo = {
+	name:'foo',
+	nickname:'babo'
+};
+
+console.log(foo.nickname); //(출력값) babo
+delete foo.nickname;       //(출력값) nickname 프로퍼티 삭제
+console.log(foo.nickname); //(출력값) undefined
+
+delete foo;                //(출력값) foo 객체 삭제 시도
+console.log(foo.name);     //(출력값) foo
+console.dir(foo.name);
+
+
+/*
+ * 3-10 동일한 객체를 참조하는 두 변수 objA 와 objB
+ */
+
+var objA = {
+	val:40
+};
+var objB = objA;
+
+console.log(objA.val); //(출력값) 40
+console.log(objB.val); //(출력값) 40
+
+objB.val = 50;
+console.log(objA.val); //(출력값) 50
+console.log(objB.val); //(출력값) 50
+
+/*
+ * 3-11 기본 타입과 참조 타입의 비교 연산
+ * 기본타입은 값자체를 비교하지만 객채화 같은 참조 타입의 경우는 참조값이 같아야한다.
+ */
+
+ var a = 100;
+ var b = 100;
+ 
+ var objA = {value:100};
+ var objB = {value:100};
+ var objC = objB;
+ 
+ console.log(a == b)      //(출력값) true;
+ console.log(objA == objB)//(출력값) false;
+ console.log(objB == objC)//(출력값) true;
+ 
+ 
+ /*
+  * 참조에 의한 함수 호출 방식
+  * 3-12 Call by Value와 Call by Reference 차이
+  */
+
+var a = 100;
+var objA = {value:100};
+
+function changeArg(num,obj){
+	num = 200;
+	obj.value = 200;
+	console.log(num);
+	console.log(obj);
+}
+changeArg(a, objA);
+
+console.log(a);   //(출력값) 100
+console.log(objA);//(출력값) {value:200} 
+
+
+/*
+ * 프로토타입(모든 객체는 자신의 부모 역할을 하는 객체와 연결되어 있다.)
+ * 3-12 객체 생성 및 출력
+ */
+
+var foo = {
+	name:'foo',
+	age:30
+};
+
+console.log(foo.toString());
+console.dir(foo);
+
+/*
+ * 3-13 배열 리터럴을 통한 배열 생성
+ */
+
+//배열 리터럴을 통한 배열 생성
+var colorArr = ['orange','yellow','blue','green','red'];
+console.log(colorArr[0]);//(출력값) orange
+console.log(colorArr[1]);//(출력값) yellow
+console.log(colorArr[4]);//(출력값) red
+
+/*
+ * 3-14 배열 요소의 동적 생성
+ */
+
+ //빈배열
+ var emptyArr = [];
+ console.log(emptyArr[0])//(출력값) undefined
+ 
+ //배열 요소 동적 생성
+ emptyArr[0] = 100;
+ emptyArr[3] = 'eight';
+ emptyArr[7] = true;
+ console.log(emptyArr);//(출력값)  [100, undefined × 2, "eight", undefined × 3, true]
+ console.log(emptyArr.length);
+
+ /*
+  * 3-15 배열 length 프로퍼티
+  */
+
+ var arr=[ ];
+ console.log(arr.length);//(출력값) 0
+ 
+ arr[0] = 0;             //arr.length=1
+ arr[1] = 1;             //arr.length=2
+ arr[2] = 2;             //arr.length=3
+ arr[100] = 100;         //arr.length=101
+ console.log(arr.length);//(출력값) 101
+
+ /*
+  * 3-16 배열 length 프로퍼티의 명시적 변경
+  */
+ var arr = [0,1,2];
+ console.log(arr.length); //(출력값) 3
+ arr.length = 5;
+ console.log(arr);//(출력값) [0, 1, 2, undefined × 2]
+
+ arr.length=2;
+ console.log(arr);   //(출력값) [0, 1]
+ console.log(arr[2]);//(출력값) undefined
+
+
+ /*
+  * 배열 표준 메서드와 length 프로퍼티
+  * 3-17 push() 메서드와 length 프로퍼티
+  */ 
+
+//arr 배열 생성
+var arr = ['zero','one','two'];
+
+//push() 메서드 호출
+arr.push('three');
+console.log(arr);//(출력값) ['zero','one','two','three']
+
+//length 값 변경후 ,push() 메서드 호출
+arr.length = 5;
+arr.push('four');
+console.log(arr);//(출력값)['zero','one','two','three',undefined,'four']
+
+/*
+ * 배열과 객체
+ * 3-18 배열과 객체의 유사점과 차이점
+ */ 
+
+ //colorsArray 배열
+ var colorsArray = ['orange','yellow','green'];
+ console.log(colorsArray[0]); //(출력값) orange
+ console.log(colorsArray[1]); //(출력값) yellow
+ console.log(colorsArray[2]); //(출력값) green
+ 
+ //colorsObj 객체
+ var colorsObj = {
+	 '0':'orange',
+	 '1':'yellow',
+	 '2':'green'
+ };
+ console.log(colorsObj[0]); //(출력값) orange
+ console.log(colorsObj[1]); //(출력값) yellow
+ console.log(colorsObj[2]); //(출력값) green
+
+//typeof 연산자 비교
+console.log(typeof colorsArray);//(출력값) object (not Array)
+console.log(typeof colorsObj);  //(출력값) object
+
+//length 프로퍼티
+console.log(colorsArray.length);//(출력값) 3
+console.log(colorsObj.length);  //(출력값) undefined
+
+//배열 표준 메서드
+colorsArray.push('red'); //['orange','yellow','green','red']
+// colorsObj.push('red');   //Uncaught TypeError: colorsObj.push is not a function
+
+
+/*
+ * 3-19 배열의 프로토타입 객체의 프로토타입 비교
+ */ 
+ 
+ var emptyArray = [];//배열 리터럴을 통한 빈 배열 생성
+ var emptyObj   = {};//객체 리터럴을 통한 빈 객체 생성
+ 
+ console.dir(emptyArray.__proto__);
+ console.dir(emptyObj.__proto__);
+ 
+ 
+ /*
+  * 배열의 프로퍼티 동적 생성
+  * 3-20 배열의 동적 프로퍼티 생성
+  */ 
+ 
+//배열 생성
+var arr = ['zero','one','two'];
+console.log(arr.length); //(출력값) 3
+
+//프로퍼티 동적 추가
+arr.color = 'blue';
+arr.name = 'number_array';
+console.log(arr.length);  //(출력값) 3
+
+//배열 원소 추가
+arr[3] = 'red';
+console.log(arr.length);  //(출력값) 4
+
+//배열 객체 출력
+console.log(arr);         //(출력값) ["zero", "one", "two", "red", color: "blue", name: "number_array"]
+ 
+ 
+/*
+ * 3-21 배열의 프로퍼티 열거
+ */  
+ 
+ for(var prop in arr){
+	 console.log(prop,arr[prop]);
+	 //0 zero
+// 	  1 one
+// 	  2 two
+// 	  3 red
+// 	  color blue
+// 	  name number_array
+ }
+ 
+ for(var i=0;i<arr.length;i++){
+	 console.log(i,arr[i]);
+// 	  0 "zero"
+// 	  1 "one"
+// 	  2 "two"
+// 	  3 "red"
+ }
+ 
+ 
+ 
+ /*
+  * 3-22 delete 연산자를 이용한 배열 프로퍼티 삭제
+  * delete 연산자는 해당 요소의 값을 undefined로 설정할뿐 원소 자체를 삭제하지 않는다
+  * 떄문에 보통 배열에서 요소들을 완전히 삭제할 경우 자바스크립트에서는 splice() 배열 메서드를 사용한다
+  */  
+ var arr = ['zero','one','two','three'];
+ delete arr[2];
+ console.log(arr);       //(출력값) ["zero", "one", undefined × 1, "three"]
+ console.log(arr.length);//(출력값) 4
+ 
+ /*
+  * 3-23 splice() 메서드를 이용한 배열 프로퍼티 삭제
+  */  
+  var arr = ['zero','one','two','three'];
+  arr.splice(2, 1);
+  console.log(arr);       //(출력값) ["zero", "one", "three"]
+  console.log(arr.length);//(출력값) 3
+ 
+ 
+ 
+  /*
+   * Array() 생성자 함수
+   * 3-24 Array() 생성자 함수를 통한 배열 생성
+   */
+   var foo = new Array(3);
+   console.log(foo);             //(출력값) [undefined,undefined,undefined]
+   console.log(foo.length);      //(출력값) 3
+   var bar = new Array(1,2,3);
+   console.log(bar);             //(출력값) [1, 2, 3]
+   console.log(bar.length);      //(출력값) 3
+   /*
+    * 유사 배열 객체
+    * 3-25 유사 배열 객체의 배열 메서드 호출
+    */
+    var arr = ['bar'];
+    var obj = {
+  	  name:'foo',
+  	  length:1
+    };
+    
+    arr.push('baz'); //(출력값) ['bar','baz']
+  //   obj.push('baz');                   //(출력값) error
+    Array.prototype.push.apply(obj,['baz']); 
+    console.log(obj);                     //(출력값) {1: "baz", name: "foo", length: 2}
+    
+    
+    
+    /*
+     * 기본 타입과 표준 메서드
+     * 3-26 기본 타입 변수에서의 메서드 호출
+     */
+    //숫자 메서드 호출
+    var num = 0.5;
+    console.log(num.toExponential(1)); //(출력값) 5.0e-1
+    
+    //문자열 메서드 호출
+    console.log("test".charAt(2));     //(출력값) s
+    /*
+     * 연산자
+     * 3-27 +연산자 예제
+     * 더하기 연산과 문자열 연결 연산을 수행한다.
+     */
+    var add1 = 1+2;
+    var add2 = 'my' + 'string';
+    var add3 = 1 + 'string';
+    var add4 = 'string' + 2;
+    
+    console.log(add1); //(출력값) 3
+    console.log(add2); //(출력값) mystring
+    console.log(add3); //(출력값) 1string
+    console.log(add4); //(출력값) string2
+    /*
+     * 3-28 typeof 연산자
+     * 피연산자의 타입을 문자열 형태로 리턴한다.
+     * 기본타입 숫자            'number'
+     * 기본타입 문자열         'string'
+     * 기본타입 불린값         'boolean'
+     * 기본타입 null       'object'
+     * 기본타입 undefined  undefined
+     * 참조타입 객체             'object'
+     * 참조타입 배열             'object'
+     * 참조타입 함수             'function'
+     */
+     
+     
+     
+     /*
+      * 3-29 ==(동등) 연산자와 ===(일치)연산자
+      * == 연산자는 타입이 다를경우 타입 변환을 거친다음비교
+      * ===연산자는 타입변경을 하지않고 비교한다.
+      */
+      console.log(1 =='1');  //(출력값) true
+      console.log(1 ==='1'); //(출력값) false
+      /*
+       * 3-30 !!연산자
+       * !!연산자는 피연산자를 불린값으로 변환한다.
+       */
+  	console.log(!!0);        //(출력값) false
+  	console.log(!!1);        //(출력값) true
+  	console.log(!!'string'); //(출력값) true
+  	console.log(!!'');       //(출력값) false
+  	console.log(!!true);     //(출력값) true
+  	console.log(!!false);    //(출력값) false
+  	console.log(!!null);     //(출력값) false
+  	console.log(!!undefined);//(출력값) false
+  	console.log(!!{});       //(출력값) true
+  	console.log(!![1,2,3]);  //(출력값) true
+  </script>
+  </html>
