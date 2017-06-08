@@ -43,5 +43,47 @@ var add = function(x,y){
 var plus = add;
 console.log(add(3,4)); //(출력값) 7
 console.log(plus(5,6));//(출력값) 11
+
+
+
+/**
+ * 4-3 기명 함수 표현식의 함수 호출 방법
+ * 함수 표현식에서 사용된 함수 이름이 외부 코드에서 접근 불가능하기 때문이다.
+ * ex)그렇다면 4-2 add()함수는 어떻게 함수 이름으로 외부 호출이 가능했을까?
+ *    add()함수는 자바스크립트 엔진에 의해 다음과 같은 함수 표현식 형태로 변경되기 때문이다.
+ * 	  var add = function add(x,y){
+ * 	  	return x + y;
+ *	  };
+ */
+ 
+ var add = function sum(x,y){
+		return x + y	
+	};
+	console.log(add(3,4)); //(출력값) 7
+// 	console.log(sum(3,4)); //(출력값) Uncaught ReferenceError: sum is not defined
+
+
+/**
+ * 4-4 함수 표현식 방식으로 구현한 팩토리얼 함수
+ */
+
+var factorialVar = function factorial(n){
+	if(n <= 1){
+		return 1;
+	}
+	return n * factorial(n-1);
+};
+
+console.log(factorialVar(3)); //(출력값) 6
+// console.log(factorial(3));    //(출력값) Uncaught ReferenceError: factorial is not defined
+
+/**
+ * 4-5 Function() 생성자 함수를 이용한 add()함수 생성
+ *
+ * new Function(arg1,arg2,...argN,functionBody)
+ */
+
+ var add = new Function('x','y','return x + y');
+ console.log(add(3,4));
 </script>
 </html>
