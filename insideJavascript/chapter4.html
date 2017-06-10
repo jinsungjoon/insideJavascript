@@ -344,36 +344,315 @@ console.log(factorialVar(3)); //(출력값) 6
 		func(1,2,3);//(출력값) 1         2
         
 		
-	   /**
-        * 4-22 arguments 객체 예제 코드
-		* 자바스크립트에서는 함수를 호출할 때 함수 형식에 맞춰 인자를 넘 기지 않더라도 에러가 발생하지 않는다.
-        * 런타임 시에 호출된 인자의 개수를 확 인하고 이에 따라 동작을 다르게 해줘야 할 경우가 있다. 이를 가능케 하는 게 바로 arguments 객 체다.
-        * 자바스크립트에서는 함수를 호출할 때 인수들과 함께 암묵적으로 arguments 객체가 함수 내부로 전달되기 때문이다.
-        * arguments 유사 배열 객체
-        */
-        
-        //add() 함수
-        function add(a,b){
-			//arguments 객체 출력
-			console.dir(arguments);
-			return a+b;
+/**
+* 4-22 arguments 객체 예제 코드
+* 자바스크립트에서는 함수를 호출할 때 함수 형식에 맞춰 인자를 넘 기지 않더라도 에러가 발생하지 않는다.
+* 런타임 시에 호출된 인자의 개수를 확 인하고 이에 따라 동작을 다르게 해줘야 할 경우가 있다. 이를 가능케 하는 게 바로 arguments 객 체다.
+* 자바스크립트에서는 함수를 호출할 때 인수들과 함께 암묵적으로 arguments 객체가 함수 내부로 전달되기 때문이다.
+* arguments 유사 배열 객체
+*/
+      
+ //add() 함수
+function add(a,b){
+	//arguments 객체 출력
+	console.dir(arguments);
+	return a+b;
+}
+
+console.log(add(1));     //(출력값) NaN
+console.log(add(1,2));   //(출력값) 3
+console.log(add(1,2,3)); //(출력값) 3
+
+//매개변수 개수가 정확하게 정해지지 않은 함수 예제
+function sum(){
+	var result = 0;
+	
+	for(var i = 0; i < arguments.length; i++){
+		result += arguments[i];
+	}
+	return result;
+}
+
+console.log(sum(1,2,3));            //(출력값) 6
+console.log(sum(1,2,3,4,5,6,7,8,9));//(출력값) 45
+
+
+/**
+* 4.4.2   호출 패턴과 this 바인딩
+* 4.4.2.1 객체의 메서드 호출할 떄 this 바인딩
+* 4-23 메서드 호출 사용 시 this 바인딩
+*/
+
+//myObject 객체 생성
+var myObject = {
+		name:'foo',
+		sayName:function(){
+			console.log(this.name);
 		}
-		
-		console.log(add(1));     //(출력값) NaN
-		console.log(add(1,2));   //(출력값) 3
-		console.log(add(1,2,3)); //(출력값) 3
-		
-		//매개변수 개수가 정확하게 정해지지 않은 함수 예제
-		function sum(){
-			var result = 0;
+};
+
+//otherObject 객체 생성
+var otherObject = {
+	name:'bar'
+};
+
+//otherObject.sayName()메서드
+otherObject.sayName = myObject.sayName;
+
+//sayName() 메서드 호출
+myObject.sayName();   //(출력값) foo
+otherObject.sayName();//(출력값) bar
+
+
+
+/**
+* 4.4.2.2 함수를 호출할 때 this 바인딩 
+* 4-24 전역 객체와 전역 변수의 관계를 보여주는 예제코드
+*/
+
+var foo = "I'm foo";//전역 변수 선언
+
+console.log(foo);          //(출력값) I'm foo
+console.log(window.foo);   //(출력값) I'm foo
+
+/**
+* 4-25 함수를 호출할 때 this 바인딩을 보여주는 예제 코드
+*/
+
+var test = 'This is test';
+console.log(window.test);
+
+//sayFoo() 함수
+var sayFoo = function(){
+	console.log(this.test);// sayFoo()함수 호출 시 this는 전역 객체에 바인딩 된다.
+};
+
+sayFoo();
+
+
+/**
+* 4-26 내부 함수의 this 바인딩 동작을 보여주는 예제 코드
+*/
+
+//전역 변수 value 정의
+var value = 100;
+
+//myObject 객체 생성
+var myObject = {
+		value:1,
+		func1:function(){
+			this.value += 1;
+			console.log('func1() called this.value : '+this.value);//(출력값) func1() called this.value : 2
 			
-			for(var i = 0; i < arguments.length; i++){
-				result += arguments[i];
+			//func2()내부 함수
+			func2 = function(){
+				this.value += 1;
+				console.log('func2() called this.value : '+this.value);//(출력값) func2() called this.value : 101
+				
+				//func3()내부 함수
+				func3 = function(){
+					this.value += 1;
+					console.log('func3() called this.value : '+this.value);//(출력값) func3() called this.value : 102
+				}
+				
+				func3();
+				
 			}
-			return result;
+			
+			func2();
 		}
-		
-		console.log(sum(1,2,3));            //(출력값) 6
-		console.log(sum(1,2,3,4,5,6,7,8,9));//(출력값) 45
+};
+myObject.func1();
+
+
+/**
+* 4-27 내부 함수의 this 바인딩 문제를 해결한 예제 코드
+*/
+
+//전역 변수 value 정의
+var value = 100;
+
+//myObject 객체 생성
+var myObject = {
+		value:1,
+		func1:function(){
+			var that = this;
+			that.value += 1;
+			console.log('func1() called this.value : '+that.value);//(출력값) func1() called that.value : 2
+			
+			//func2()내부 함수
+			func2 = function(){
+				that.value += 1;
+				console.log('func2() called this.value : '+that.value);//(출력값) func2() called that.value : 3
+				
+				//func3()내부 함수
+				func3 = function(){
+					that.value += 1;
+					console.log('func3() called this.value : '+that.value);//(출력값) func3() called that.value : 4
+				}
+				
+				func3();
+				
+			}
+			
+			func2();
+		}
+};
+myObject.func1();
+
+
+
+/**
+* 4.4.2.3 생성자 함수를 호출할 때 this 바인딩
+* 4-28 생성자 함수의 동작 방식
+* 1) 빈 객체 생성 및 this 바인딩
+* 2) this를 통한 프로퍼티 생성
+* 3) 생선된 객체 리턴 
+* 
+* Person() 함수 가 생성자 로 호출 되면 , 함수 코드 가 실행 되기 전에 반 객체 가 생성 된다 . 
+* 여기서 생성 된 빈 객체 는 Person() 생성자 함수 의 prototype 프로퍼티 가 가리키는 객체 ( Person.prototype 객체 ) 
+* 를 [ PrototypeII 링크 로 연결 해서 자신 의 프로토 타입 으로 설정 한다 . 그리고 이렇게 생성 된 객체 는 생성자 함수 코드 에서 사용 되는 this 로 바인딩 된다
+* this 가 가리키는 빈 객체 에 name 이라는 동적 프로퍼티 를 생성 했다 .
+* 리턴 값 이 특별히 없으므로 this 로 바인딩 한 객체 가 생성자 함수 의 리턴 값 으로 반환 되 해서 , foo 변수 에 저장 된다
+* 
+* 
+*/
+
+// Person()생성자 함수
+var Person = function(name){
+	//함수 코드 실행 전
+	this.name = name;
+	//함수 리턴
+};
+
+// foo 객체 생성
+var foo = new Person('foo');
+console.log(foo.name);
+
+
+/**
+ * 4-29 객체 생성 두 가지 방법 (객체 리터럴 vs 생성자 함수)
+ * 리터털 방식은 한번만 생성할수 없는 방면에 생성자 함수  방식은 재사용 가능하다
+ * 리터털 방식은 prototype Object인 방면에 함수형 생성자 함수 방식은 Person이 prototype 이다. 
+ */
+ 
+ //객체 리터럴 방식으로 foo 객체 생성
+ var foo = {
+	name:'foo',
+	age:35,
+	gender:'man'
+};
+console.dir(foo);
+
+//생성자 함수
+
+function Person(name,age,gender,position){
+	this.name = name;
+	this.age = age;
+	this.gender = gender;
+}
+
+//Person 생성자 함수를 이용한 bar 객체,baz 객체 생성
+var bar = new Person('bar',33,'woman');
+console.dir(bar);
+
+var baz = new Person('foo',25,'woman');
+console.dir(baz);
+
+
+/**
+ * 4-30 new를 붙이지 않고 생성자 함수 호출 시의 오류
+ * 일반 함수 호출의 경우는 this가 window 전역 객체에 바인딩되는 반면에,
+ * 생성자 함수 호출 의 경우 this는 새로 생성되는 빈 객체에 바인딩되기 때문이다 .
+ *
+ * new 없이 일반 함수 형태로 호출할 경우 this는 함수 호출이므로 전역 객체인 window 객체로 바인딩된다.
+ * Person() 함수는 리턴값이 없다. 
+ * 생성자 함수는 별도의 리턴값이 정해져 있지 않은 경우에 새로 생성된 객체가 리턴되지만 일반 함수를 호출할 때는 undefined가 리턴된다.(일반 함수 호출시 리턴값이 없어서 undefined)
+ */
+ 
+ var qux = Person('qux',20,'man');
+ console.log(qux)          //(출력값) undefined
+ 
+ console.log(window.name)  //(출력값) qux
+ console.log(window.age)   //(출력값) 20
+ console.log(window.gender)//(출력값) man
+ 
+ 
+ 
+ //강제로 인스턴스 생성하기
+ function A(arg) { 
+// 	 if (!(this instanceof A)){
+	 if (!(this instanceof arguments.callee)){
+		 console.log()
+		 return new A(arg);
+	 } 
+	 this.value = arg ? arg : 0; 
+ } 
+ var a = new A(100); 
+ var b = A(10); 
+ console.log(a.value);      // (출력값) 100 
+ console.log(b.value);      // (출력값) 10 
+//  console.log(global.value); // (출력값) Uncaught ReferenceError: global is not defined
+
+
+/**
+ * 4.4.2.4 call과 apply 메서드를 이용한 명시적인 this 바인딩
+ * 4-31 apply() 메서드를 이용한 명시적인 this 바인딩
+ * 내부적인 this 이외에도 this를 특정 객체에 명시적으로 바인딩 시키는 방법이 있다.
+ * apply() call() 메서드
+ * function.apply(thisArg,argArray) 
+ * 첫번째 인자가 넘긴 객체가 this, 두번쨰 인자는 함수허출시 넘길 인자들의 배열이다.
+ */
+ 
+ //생성자 함수
+ function Person2(name,age,gender){
+	this.name   = name;
+	this.age    = age;
+	this.gender = gender;
+ }
+ 
+ //foo 빈 객체 생성
+ var foo = {};
+ 
+ //apply()메서드 호출
+ Person2.apply(foo,['foo',30,'man']);
+ 
+ console.dir(foo);
+ 
+
+ var foo2 = {};
+ Person2.call(foo2,'foo2',302,'man2');
+ console.dir(foo2);
+ 
+ /**
+  * 4-32 apply() 메서드를 활용한 arguments 객체의 배열 표준 메서드 slice()활용 코드
+  */
+ 
+function myFunction(){
+	console.dir(arguments);
+	//arguments.shift();
+
+	//arguments 객체를 배열로 변환
+	var args = Array.prototype.slice.apply(arguments);
+}
+myFunction(1,2,3);
+
+
+
+/**
+ * 4-33 slice() 메서드 사용 예제
+ */
+ 
+	var arrA = [ 1, 2, 3 ];
+	var arrB = arrA.slice(0)    // [1,2,3] 
+	var arrC = arrA.slice();    // [1,2,3] 
+	var arrD = arrA.slice(1);   // [2,3] 
+	var arrE = arrA.slice(1,2); // [2]
+	
+var array = [1,2,3];
+var copy = array.slice();
+copy.push(4);
+console.dir(array);
+console.dir(copy);
 </script>
 </html>
