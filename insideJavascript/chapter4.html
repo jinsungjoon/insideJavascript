@@ -253,6 +253,127 @@ console.log(factorialVar(3)); //(출력값) 6
      //페이지 로드 시 호출된 콜백 함수
      window.onload = function(){
     	console.log('This is the callback function');
-    }
+     };
+    
+    
+     /**
+      * 4.3.2 즉시 실행 함수
+      * 4-16 즉시 실행 함수 예제 코드
+      */
+      
+      (function(name){
+    	  console.log('This is the immediate function - > '+name);
+      })('foo');
+     
+     
+      /**
+       * 4-17 jquery에서 사용된 즉시 실행 함수
+       */
+       (function(window,undefined){
+    	   
+       })(window);
+      
+      
+       /**
+        * 4.3.3 내부 함수
+        * 4-18 내부 함수 예제 코드
+        * 내부함수는 자신을 둘러싼 외부 함수의 변수에 접근 가능하다
+        */
+        
+        //parent() 함수 정의
+        function parent(){
+    	   var a = 100;
+    	   var b = 200;
+    	   
+    	   //child()내부 함수 정의
+    	   function child(){
+    		   var b = 300;
+    		   console.log(a);//(출력값) 100
+    		   console.log(b);//(출력값) 300
+    	   }
+    	   child();
+       }
+       parent();
+//        child();  //(출력값) Uncaught ReferenceError: child is not defined 함수 스코핑 대문에 외부에서 내부함수 호출이 불가능함
+
+
+       /**
+        * 4-19 함수 스코프 외부에서 내부 함수 호출하는 예제 코드
+        * 부모 함수 스코프의 변수를 참조하는 inner() 와 값은 함수를 클로저라고 한다.
+        */
+		function parent(){
+			var a = 100;
+			//child()내부 함수
+			var child = function(){
+				console.log(a);
+			}
+			//child()함수 반환
+			return child;
+		}
+		var inner = parent();
+		inner();//(출력값) 100
+		
+		
+		/**
+        * 4.3.4 함수를 리턴하는 함수
+        * 4-20 자신을 재정의하는 함수 예제 코드
+        */	
+        
+        //self() 함수
+        var self = function(){
+			console.log('a');
+			return function(){
+				console.log('b');
+			}
+		}
+		self = self();//(출력값) a
+		self();       //(출력값) b 
+		
+		
+		/**
+        * 4.4 함수 호출과 this
+        * 4.4.1 arguments 객체
+        * 4-21 함수 형식에 맞춰 인자를 넘기지 않더라도 함수 호출이 가능함을 나타내는 예제코드
+        */	
+        function func(arg1,arg2){
+			console.log(arg1,arg2);
+		}
+		func();     //(출력값) undefined undefined
+		func(1);    //(출력값) 1         undefined
+		func(1,2);  //(출력값) 1         2
+		func(1,2,3);//(출력값) 1         2
+        
+		
+	   /**
+        * 4-22 arguments 객체 예제 코드
+		* 자바스크립트에서는 함수를 호출할 때 함수 형식에 맞춰 인자를 넘 기지 않더라도 에러가 발생하지 않는다.
+        * 런타임 시에 호출된 인자의 개수를 확 인하고 이에 따라 동작을 다르게 해줘야 할 경우가 있다. 이를 가능케 하는 게 바로 arguments 객 체다.
+        * 자바스크립트에서는 함수를 호출할 때 인수들과 함께 암묵적으로 arguments 객체가 함수 내부로 전달되기 때문이다.
+        * arguments 유사 배열 객체
+        */
+        
+        //add() 함수
+        function add(a,b){
+			//arguments 객체 출력
+			console.dir(arguments);
+			return a+b;
+		}
+		
+		console.log(add(1));     //(출력값) NaN
+		console.log(add(1,2));   //(출력값) 3
+		console.log(add(1,2,3)); //(출력값) 3
+		
+		//매개변수 개수가 정확하게 정해지지 않은 함수 예제
+		function sum(){
+			var result = 0;
+			
+			for(var i = 0; i < arguments.length; i++){
+				result += arguments[i];
+			}
+			return result;
+		}
+		
+		console.log(sum(1,2,3));            //(출력값) 6
+		console.log(sum(1,2,3,4,5,6,7,8,9));//(출력값) 45
 </script>
 </html>
