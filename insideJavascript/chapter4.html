@@ -653,5 +653,228 @@ var copy = array.slice();
 copy.push(4);
 console.dir(array);
 console.dir(copy);
+
+
+
+/**
+ * 4.4.3 함수 리턴
+ * 4.4.3.1 규칙 1) 일반 함수나 메서드는 리턴값을 지정하지 않을 경우, undefined 값이 리턴된다
+ * 4-34 return 문 없는 일반 함수의 리턴값 확인
+ */
+	//noReturnFunc() 함수 
+	var noReturnFunc = function () { 
+	 	console.log('This function has no return statement.'); 
+	 }; 
+	 var result = noReturnFunc(); 
+	 console.log(result);
+	 
+	 
+	 
+ /**
+  * 4.4.3.2 규칙 2) 생성자 함수에서 리턴값을 지정하지 않을 경우 생성된 객체가 리턴된다
+  * 4-35 생성자 함수에서 명시적으로 객체를 리턴했을 경우
+  */
+  
+//Person() 생성자 함수 
+function Person3(name, age, gender){
+	  this.name   = name;
+	  this.age    = age;
+	  this.gender = gender; 
+	  // 명시적으로 다른 객체 반환 
+	  return {name:'bar', age:20, gender:'woman'};
+  }
+  var foo3 = new Person3('foo', 30, 'man');
+  console.dir(foo3);
+  
+  
+	 
+  /**
+   * 4-36 생성자 함수에서 명시적으로 기본 타입(불린, 숫자, 문자열) 값을 리턴했을 경우
+   */
+   
+   function Person4(name, age, gender){
+	  this.name   = name; 
+	  this.age    = age; 
+	  this.gender = gender; 
+  	  return 100;
+  } 
+  var foo4 = new Person4('foo', 30, 'man'); 
+  console.log(foo4);
+  
+  
+  /**
+   * 4.5 프로토타입 체이닝
+   * 4.5.1 프로토타입의 두 가지 의미
+   * 4-37 prototype 프로퍼티와 [[prototype]] 링크 구분
+   */
+   
+   //Person 생성자 함수
+   function Person5(name){
+	  this.name = name;
+   }
+  
+   //foo 객체 생성
+   var foo5 = new Person5('foo');
+   
+   console.dir(Person5);
+   console.dir(foo5);
+   
+   
+   /**
+    * 4.5.2 객체 리터럴 방식으로 생성된 객체의 프로토타입 체이닝
+    * 4-38 객체 리터럴 방식에서의 프로토타입 체이닝
+    * 리터럴 로 생성 한 객체 는 Object() 라는 내장 생성자 함수 로 생 성된 것이다 . 
+    * Object() 생성자 함수 도 함수 객체 이므로 prototype 이라는 프로퍼티 속성 이 있다
+    * 이제 프로토 타입 체이닝 이라는 개념 을 살펴 보자 . 
+    * 자바 스크립트 에서 특정 객체 의 프로퍼티 나 메서드 에 접근 하려고 할 때 , 
+    * 해당 객체 ( 예제 4 - 38 에서는 myObject 객체 ) 에 접근 하려는 프로퍼티 또는 메서드 가 없다면 
+    * [PrototypeI] 링크 를 따라 자신 의 부모 역할 을 하는 프로토 타입 객체 의 프로퍼티 를 차례 대로 검색 하는 것을 프로토 타입 체이닝 이라고 말한다 .
+    */
+    
+    
+   
+	var myObject = {
+		name : 'foo',
+		sayName : function() {
+			console.log('My Name is ' + this.name);
+		}
+	};
+	myObject.sayName();                              //(출력값) My Name is foo
+	console.log(myObject.hasOwnProperty('name'));    //(출력값) true
+	console.log(myObject.hasOwnProperty('nickName'));//(출력값) false 
+// 	myObject.sayNickName();                          //(출력값) Uncaught TypeError: myObject.sayNickName is not a function
+
+
+	/**
+    * 4.5.3 생성자 함수로 생성된 객체의 프로토타입 체이닝
+    * 4-39 생성자 함수 방식에서의 프로토타입 체이닝
+    */
+    
+    //Person6() 생성자 함수
+    function Person6(name,age,hobby){
+		this.name  = name;
+		this.age   = age;
+		this.hobby = hobby;
+	}
+	//foo 객체 생성
+    var foo6 = new Person6('foo', 30, 'tennis'); 
+	// 프로토타입 체이닝 
+	console.log(foo6.hasOwnProperty('name')); // true 
+    // Person.prototype 객체 출력 
+    console.dir(Person6.prototype);
+	
+    /**
+     * 4.5.4 프로토 타입 체이닝 의 종점
+     * 자바 스크립트 에서 Object.prototype 객체 는 프로토 타입 체이닝 의 종점 이다
+     */
+     
+     
+     
+   /**
+    * 4.5.5 기본 데이터 타입 확장
+    * 4-40 String 기본 타입에 메서드 추가
+    */
+	String.prototype.testMethod = function(){
+		console.log('This is the String.prototype.testMethod()');
+    };
+    
+    var str = "this is test";
+    str.testMethod();
+    
+    console.dir(String.prototype);
+    
+    
+    /**
+     * 4.5.6 프로토타입도 자바스크립트 객체다.
+     * 4-41 프로토타입 객체의 동적 메서드 생성 예제 코드
+     * 프로토타입 객체 역시 자바스크립트 객체이므로 일반 객체 처럼 동적으로 프로퍼티를 추가/삭제하는 것이 가능하다.
+     */
+     
+     
+  
+	// Person() 생성자 함수 
+	
+	function Person7(name) {
+		this.name = name;
+	} 
+    // foo 객체 생성 
+    var foo7 = new Person7('foo'); 
+     
+    // 프로토타입 객체에 sayHello() 메서드 정의 
+    Person7.prototype.sayHello = function () {
+    	console.log('Hello'); 
+    }
+    foo7.sayHello(); // Hello
+    
+    
+    
+    /**
+     * 4.5.7 프로토타입 메서드와 this 바인딩
+     * 4-42 프로토타입 메서드와 this 바인딩
+     */
+  
+	// Person() 생성자 함수 
+	function Person8(name){
+    	this.name = name; 
+   	} 
+    //getName() 프로토타입 메서드 
+    Person8.prototype.getName = function () {
+    	return this.name;
+	}; 
+	// foo 객체 생성 
+	var foo8 = new Person8('foo'); 
+	console.log(foo8.getName()); // (출력값) foo 
+	//Person.prototype 객체에 name 프로퍼티 동적 추가 
+	Person8.prototype.name = 'person'; 
+    console.log(Person8.prototype.getName()); // (출력값) person
+	console.log(foo8.getName()); // (출력값) foo 
+	
+	
+	 
+  /**
+   * 4.5.8 디폴트 프로토타입은 다른객체로 변경이 가능하다
+   * 4-43 프로토 타입 객체 변경
+   */
+  console.log(" 4-43 프로토 타입 객체 변경"); 
+  // Person() 생성자 함수 
+  function Person9(name){
+		this.name = name; 
+  } 
+  console.log(Person9.prototype.constructor);
+  
+//foo 객체 생성 
+var foo9 = new Person('foo'); 
+console.log(foo9.country); 
+
+// 디폴트 프로토타입 객체 변경 
+Person9.prototype = {
+	country: 'korea', 
+}; 
+console.log(Person9.prototype.constructor); 
+//bar 객체 생성
+var bar9 = new Person9('bar'); 
+console.log(foo9.country); 
+console.log(bar9.country); 
+console.log(foo9.constructor); 
+console.log(bar.constructor);
+
+
+/**
+ * 4.5.9 객체의 프로퍼티 읽기나 메서드를 실행할 때만 프로토타입 체이닝이 동작한다
+ * 4-44 프로토타입 체이닝과 동적 프로퍼티 생성
+ */
+ 
+//Person() 생성자 함수 
+function Person10(name){
+	this.name = name; 
+} 
+Person10.prototype.country = 'Korea';
+var foo10 = new Person10('foo'); 
+var bar10 = new Person10('bar'); 
+console.log(foo10.country); //(츨력값) Korea
+console.log(bar10.country); //(츨력값) Korea 
+foo10.country = 'USA'; 
+console.log(foo10.country);  //(츨력값) USA
+console.log(bar10.country);  //(츨력값) Korea
 </script>
 </html>
