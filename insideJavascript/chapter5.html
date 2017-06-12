@@ -111,7 +111,7 @@
      *  value:"value1"      value:"value2"            this
      *  printFunc           printValue                
      *  this                this
-     *  scope[0]전역객체       scope[0] scope[1]         scope[0] scope[1] scope[2] vlaue 변수를 printFunc 변수 객체에서 찾으므로 결과값이 value2가 된다.
+     *  scope[0]전역객체          scope[1] scope[0]         scope[2] scope[1] scope[0]   vlaue 변수를 printFunc 변수 객체에서 찾으므로 결과값이 value2가 된다.
      */
      var value = "value1";
     
@@ -132,11 +132,11 @@
       * 5-6
       *  전역 실행 컨텍스트      printFunc2 실행 컨텍스트        printValue 실행 컨텍스트
       *  변수 객체                     변수 객체                                  변수 객체
-      *  value2:"value1"     value2:"value2"            this
+      *  value2:"value1"     value2:"value2"         this
       *  printValue2         printValue2                
       *  printFunc2
       *  this                this
-      *  scope[0]            scope[0] scope[1]          scope[0] scope[1] vlaue2객체를 전역에서 찾으므로 vlaue1 이된다.
+      *  scope[0]            scope[1] scope[0]       scope[1] scope[0]  vlaue2객체를 전역에서 찾으므로 vlaue1 이된다.
       */
       
       var value2 = "value1";
@@ -149,6 +149,240 @@
     	  console.log(func());
       }
       printFunc2(printValue2);
-    	  
-  </script>
+      
+      
+      /**
+       * 5.4   클로저
+       * 5.4.1 클로저의 개념
+       * 5-7   
+       * 전역 실행 컨텍스트          outerFunc 실행 컨텍스트        innerFunc 실행 컨텍스트
+       * 변수 객체                     변수 객체                               변수 객체
+       * inner              x:10                     
+       * outerFunc          innerFunc  
+       * scope[0]           scope[1] scope[0]      scope[2] scope[1] scope[0] 
+       * outerFunc 실행 컨 텍스트 는 사라졌지 만 , outerFunc 변수 객체 는 여전히 남아 있고 ,
+       * innerFunc 의 스코프 체인 으로 참조 되고 있다 . 이것이 바로 자바 스크립트 에서 구현 한 클로저 라는 개념 이다
+       *
+       * 이미 생명 주기가 끝난 외부 함수의 변수를 참조하는 함수를 클로저라고 한다.
+       */
+       function outerFunc(){
+    	  var x = 10;                //자유변수
+    	  var innerFunc = function(){//클로져
+    		  console.log(x);
+    	  }
+    	  return innerFunc;
+       }
+      
+       var inner = outerFunc();
+       inner() //(출력값) 10
+       
+       
+       /**
+        * 5-8   
+        * 전역 실행 컨텍스트          outerFunc2 실행 컨텍스트      innerFunc2 실행 컨텍스트
+        * 변수 객체                     변수 객체                               변수 객체
+        * outerFunc2         arg1:2                 innerArg:2    
+        * exam1              arg2:4
+        *                    local:8
+        *                    innerFunc  
+        * scope[0]           scope[1] scope[0]      scope[2] scope[1] scope[0] 
+        *
+        * 이미 생명 주기가 끝난 외부 함수의 변수를 참조하는 함수를 클로저라고 한다.
+        */
+        
+        function outerFunc2(arg1,arg2){
+        	var local = 8;
+        	function innerFunc2(innerArg){
+        		console.log((arg1 + arg2) / (innerArg + local));
+        	}
+        	return innerFunc2;
+        }
+        var exam1 = outerFunc2(2,4);
+        exam1(2);
+        
+        
+        /**
+         * 5.4.2   클로저의 활용
+         * 5.4.2.1 특정 함수에 사용자가 정의한 객체의 메서드 연결하기
+         * 5-9   
+         */
+         
+         function HelloFunc(func){
+        	this.greeting = "hello";
+         }
+         
+         HelloFunc.prototype.call = function(func){
+        	 func ? func(this.greeting) : this.func(this.greeting);
+         }
+         
+         var userFunc = function(greeting){
+        	 console.log(greeting);
+         }
+         
+         var objHello = new HelloFunc();
+         objHello.func = userFunc;
+         objHello.call();
+         
+         
+         /**
+          * 5-10   
+          */
+          
+          function saySomething(obj,methodName,name){
+        	 return (function(greeting){
+        		return obj[methodName](greeting,name); 
+        	 });
+         }
+         
+         function newObj(obj,name){
+        	 obj.func = saySomething(this,"who", name);
+        	 return obj;
+         }
+         
+         newObj.prototype.who = function(greeting,name){
+        	 console.log(greeting+" "+(name || "everyone"));
+         }
+         
+         var obj1 = new newObj(objHello, "zzoon");
+         
+         obj1.call();
+         
+         
+         
+         /**
+          * 5.4.2.2 함수의 캡슐화   
+          * 5-11    
+          */
+          
+          
+	var buffAr = [ 'I am ', '', '. I live in ', '', '. I\'am ', '',
+			' years old.', ];
+	function getCompletedStr(name, city, age) {
+		buffAr[1] = name;
+		buffAr[3] = city;
+		buffAr[5] = age;
+		return buffAr.join('');
+	}
+	var str = getCompletedStr('zzoon', 'seoul', 16);
+	console.log(str);
+	
+	
+
+    /**
+     * 5-12    
+     */
+     
+     
+	var getCompletedStr = (function() {
+		var buffAr = [ 'I am ',
+		                '',
+		                '. I live in ',
+		                '',
+		                '. I\'am ',
+		                '',
+				        ' years old.', ];
+		return (function(name, city, age) {
+			buffAr[1] = name;
+			buffAr[3] = city;
+			buffAr[5] = age;
+			return buffAr.join('');
+		});
+	})();
+	var str = getCompletedStr('zzoon', 'seoul', 16);
+	console.log(str);
+	
+	
+	 /**
+     * 5.4.2.3 setTimeout()에 지정되는 함수의 사용자 정의   
+     * 5-13
+     */
+     
+     function callLater(obj,a,b){
+		 return(function(){
+			obj["sum"] = a + b;
+			console.log(obj["sum"]);
+		 });
+	 }
+	 
+	 var sumObj = {
+		 sum:0
+	 }
+	 
+	 var func = callLater(sumObj,1,2);
+	 
+	 setTimeout(func,500);
+	 
+	 
+	 
+	 /**
+      * 5.4.3   클로저를 활용할 때 주의사항
+      * 5.4.3.1 클로저의 프로퍼티값이 쓰기 가능하므로 그 값이 여러 번 호출로 항상 변할 수 있음에 유의해야 한다
+      * 5-14
+      */
+      
+      function outerFunc3(argNum){
+		 var num = argNum;
+		 return function(x){
+			 num += x;
+			 console.log('num: '+num);
+		 }
+	  }
+	  var exam3 = outerFunc3(40);
+	  exam3(5);
+	  exam3(-10);
+	  
+	  
+	  
+	  /**
+      * 5.4.3.2 하나의 클로저가 여러 함수 객체의 스코프 체인에 들어가 있는 경우도 있다
+      * 5-15
+      */
+      console.log("5-15");
+      function func4(){
+		  var x = 1;
+		  return {
+			func1:function(){
+				console.log(++x);
+			},
+			func2:function(){
+				console.log(--x);
+			}
+		  };
+	  }
+	  
+	  var exam4 = func4();
+	  exam4.func1();
+	  exam4.func2();
+	  
+	  
+	  
+
+	  /**
+      * 5.4.3.3 루프 안에서 클로저를 활용할 떄는 주의하자
+      * 5-16
+      */
+      
+//       function countSeconds(howMany){
+// 		  for(var i = 1; i <= howMany; i++){
+// 			  setTimeout(function(){
+// 				  console.log(i);
+// 			  },i*1000);
+// 		  }
+// 	  };
+// 	  countSeconds(3);
+	  
+	  
+	  
+	  
+	function countSeconds(howMany) {
+		for (var i = 1; i <= howMany; i++) {
+			(function(currentI) {
+				setTimeout(function() {
+					console.log(currentI);
+				}, currentI * 1000);
+			}(i));
+		}
+	};
+	countSeconds(3);
+</script>
   </html>
