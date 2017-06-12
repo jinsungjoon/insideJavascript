@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+</body>
+<script>
+
+
+/**
+ * 5.실행 컨텍스트와 클로저
+ * 1) 실행 컨텍스트Execution context의 개념 
+ * 2) 활성 객체Activation object와 변수 객체Variable Object 
+ * 3) 스코프 체인Scope
+ * 4) 클로저closure
+ * 5.1 실행 컨텍스트 개념
+ * 5-1
+ * 실행 컨텍스트:실행 가능한 자바스크립트 코드 블록이 실행되는 환경
+ * 현재 실행되는 컨텍스트에서 이 컨텍스트와 관련 없는 실행 코드가 실행되면,
+ * 새로운 컨텍스트가 생성되어 스택에 들어가고 제어권이 그 컨텍스트로 이동한다.
+ */
+
+ console.log("This is global context");
+ 
+ function ExContext1(){
+	 console.log("This is ExContext1");
+ };
+ function ExContext2(){
+	 ExContext1();
+	 console.log("This is ExContext2");
+ };
+ 
+ ExContext2();
+ 
+ //(출력값) This is global context
+ //(출력값) This is ExContext1
+ //(출력값) This is ExContext2
+  </script>
+  </html>
