@@ -37,5 +37,118 @@
  //(출력값) This is global context
  //(출력값) This is ExContext1
  //(출력값) This is ExContext2
+ 
+ 
+ /**
+  * 5.2 실행 컨텍스트 생성 과정
+  * 5-2
+  * 활성 객체와 변수 객체
+  * 스코프 체인
+  * 5.2.1 활성객체 생성                             ex)실행 컨텍스트가 생성되면 자바스크립트 엔진은 해당 컨텍스트에서 실행에 필요한 여러 가지 정보 를 담을 객체를 생성하는데, 이를 활성 객체라고 한다.
+  * 5.2.2 arguments 객체 생성                  ex)함수 호출시 매개변수 정보이다.
+  * 5.2.3 스코프 정보 생성 [[scope]]체인 ex)현재 컨텍스트의 유효 범위를 나타내는 스코프 정보를 생성한다.현재 컨텍스트의 변수와 상위 실행 컨텍스트의 변수도 접근가능함.
+  * 5.2.4 변수 생성                                    ex)메모리에 생성,초기화는 함수 실행전까지 이루어지지않는다 a,b undefined 할당
+  * 5.2.5 this 바인딩                               ex)메모리에 생성,초기화는 함수 실행전까지 이루어지지않는다 a,b undefined 할당
+  * 5.2.6 코드 실행                                    ex)이루어진다. 이렇게 실행되면서 변수의 초기화 및 연산, 또 다른 함수 실행 등이 이루 어진다. 그림에서 undefined가 할당된 변수 a와 b에도 이 과정에서 1, 2의 값이 할당된다.
+  */
+  
+  function execute(param1,param2){
+	 //활경객체 start
+	 var a = 1,b = 2;
+	 function func(){
+		 return a+b;
+	 }
+	 return param1 + param2 + func();
+  	 //활성객체 end 
+  }
+ 
+  execute(3,4);
+  
+  
+  /**
+   * 5.3 스코프 체인(프로토타입 체인과 비슷한 메커니즘)
+   * 5.3.1 전역 실행 컨텍스트의 스코프 체인
+   * 5-3
+   * c는 if{} for{} 그안에 선언된 변수가 밖에서는 접근이 불가하다.
+   * 자바스크립트는 if{} for{} 구문은 유효 범위가 없다. 오직 함수만이 유효 번위다.
+   */
+   
+   var var1 = 1;
+   var var2 = 2;
+   console.log(var1); //(출력값) 1
+   console.log(var2); //(출력값) 2
+   
+   
+   /**
+    * 5.3.2 함수를 호출한 경우 생성되는 실행 컨텍스트의 스코프 체인
+    * 5-4
+    * 전역 실행 컨텍스트          func 실행 컨텍스트
+    * 변수 객체                         변수 객체                                 스코프 체인
+    *  [[scope]]             [[scope]]                 scope[1] func 변수 객체
+    *  var3                  var3                      scope[0] 전역 객체
+    *  var4                  var4
+    *  func2                 this
+    *  this 
+    */
+    
+    var var3 = 1;      
+    var var4 = 2;       
+    function func2(){   
+    	//func 변수 객체
+		var var3 = 10;
+		var var4 = 20;
+		console.log(var3);//(출력값) 10
+		console.log(var4);//(출력값) 20
+    }
+    func2();              
+    console.log(var3)     //(출력값) 1
+    
+    
+    /**
+     * 5-5
+     *  전역 실행 컨텍스트      printFunc 실행 컨텍스트        printValue 실행 컨텍스트
+     *  변수 객체                     변수 객체                                변수 객체
+     *  value:"value1"      value:"value2"            this
+     *  printFunc           printValue                
+     *  this                this
+     *  scope[0]전역객체       scope[0] scope[1]         scope[0] scope[1] scope[2] vlaue 변수를 printFunc 변수 객체에서 찾으므로 결과값이 value2가 된다.
+     */
+     var value = "value1";
+    
+     function printFunc(){
+    	 var value = "value2";
+    	 
+    	 function printValue(){
+    		 return value;
+    	 }
+    	 
+    	 console.log(printValue());
+     }
+     printFunc();
+     
+     
+     
+     /**
+      * 5-6
+      *  전역 실행 컨텍스트      printFunc2 실행 컨텍스트        printValue 실행 컨텍스트
+      *  변수 객체                     변수 객체                                  변수 객체
+      *  value2:"value1"     value2:"value2"            this
+      *  printValue2         printValue2                
+      *  printFunc2
+      *  this                this
+      *  scope[0]            scope[0] scope[1]          scope[0] scope[1] vlaue2객체를 전역에서 찾으므로 vlaue1 이된다.
+      */
+      
+      var value2 = "value1";
+     
+      function printValue2(){
+    	  return value2;
+      }
+      function printFunc2(func){
+    	  var value2 = "value2";
+    	  console.log(func());
+      }
+      printFunc2(printValue2);
+    	  
   </script>
   </html>
