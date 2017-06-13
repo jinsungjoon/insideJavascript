@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+</body>
+
+<script>
+
+	/*
+	 * 6-5
+	 * prototype 기반 상속
+	 */
+	var person5 = {
+		name:"zzoon",
+		getName:function(){
+			return this.name;
+		},
+		setName:function(arg){
+			this.name = arg;
+		}
+	};
+	
+	function create_object5(o){
+		function F(){};
+		F.prototype = o;
+		return new F();
+	}
+	
+	var student5 = create_object5(person5);
+	
+	student5.setName("me");
+	console.log(student5.getName());//(출력값) me
+	
+	
+	/*
+	 * 6-6
+	 * 확장
+	 */
+	var person6 = {
+		name:"zzoon",
+		getName:function(){
+			return this.name;
+		},
+		setName:function(arg){
+			this.name = arg;
+		}
+	};
+	
+	function create_object6(o){
+		function F(){};
+		F.prototype = o;
+		return new F();
+	}
+	
+	function extend6(obj,prop){
+		if(!prop){ prop = obj; 	obj = this;	}
+		for(var i in prop)obj[i] = prop[i];
+		return obj;
+	}
+	
+	var student6 = create_object6(person6);
+	
+	var added6 = {
+		setAge:function(age){
+			this.age = age;
+		},
+		getAge:function(){
+			return this.age;
+		}
+	};
+	
+	extend6(student6,added6);
+	student6.setAge(25);
+	console.log(student6.getAge());
+	console.log(student6);
+	
+	/*
+	 * 6.2.2 클래스 기반의 상속
+	 * 6-7   
+	 */
+	 
+	 function Person7(arg){
+		this.name = arg;
+	 }
+	 
+	 Person7.prototype.setName = function(value){
+		 this.name = value;
+	 };
+	 
+	 Person7.prototype.getName = function(){
+		 return this.name;
+	 };
+	 
+	 function Student7(arg){
+		 Person7.apply(this,arguments);
+	 }
+	 
+	 var you7 = new Person7("iamhjoo");
+	 Student7.prototype = you7;
+	 
+	 var me7 = new Student7("zzoon");
+	 	 me7.setName("zzoon");
+	 	 console.log(me7.getName());
+	 	 
+	 	 console.dir(me7);
+</script>
+</html>
