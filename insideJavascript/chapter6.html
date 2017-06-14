@@ -87,7 +87,7 @@ console.log(you3.getName());
 
 /*
  * 6.2   상속 (클래스 기반,프로토타입)
- * 6-2.1 프로토타입을 이용한 상속
+ * 6.2.1 프로토타입을 이용한 상속
  * 6-4 
  */
  
@@ -194,5 +194,250 @@ console.log(you3.getName());
 	 	 console.log(me7.getName());
 	 	 
 	 	 console.dir(me7);
+	 	 
+	 	 
+
+ 	/*
+ 	 * 6.2.2.2 두 클래스 프로토타입 사이에 중개자
+ 	 * 6-8   
+ 	 */	 
+ 	 
+ 	 
+ 	 function Person8(arg){
+ 		this.name = arg;
+ 	 }
+ 	 
+ 	 Function.prototype.method = function(name,func){
+ 		 this.prototype[name] = func;
+ 	 }
+ 	 
+ 	 Person8.method("setName", function(value){
+ 		this.name = value; 
+ 	 });
+ 	 
+ 	 Person8.method("getName", function(){
+ 		return this.name; 
+ 	 });
+ 	 
+ 	 function Student8(arg){
+ 	 }
+ 	 
+
+ 	function F() {};
+ 	F.prototype =Person8.prototype;
+ 	Student8.prototype = new F();
+ 	Student8.prototype.constructor = Student8;
+ 	Student8.super = Person8.prototype;
+
+ 	var me8 = new Student8();
+ 	me8.setName("zzoon");
+ 	console.log(me8.getName());
+ 	 
+ 	 
+//  	var inherit = function(Parent, Child) {
+// 		var F = function() {};
+// 		return function(Parent, Child) {
+// 			F.prototype = Parent.prototype;
+// 			Child.prototype = new F();
+// 			Child.prototype.constructor = Child;
+// 			Child.super = Parent.prototype;
+// 		};
+// 	}();
+
+
+ 	/*
+ 	 * 6.3 캡슐화
+ 	 * 6-9
+ 	 * this 객체의 프로퍼티로 선언하면 외부에서 new 키워드로 생성 한 객체로 접근할 수 있다. 
+ 	 * 하지만 var로 선언된 멤버들은 외부에서는 접근이 불가능하다. 
+ 	 * 그리고 public 메서드가 클로저 역할을 하면서 private 멤버인 name에 접근할 수 있다.
+ 	 */
+ 	 
+ 	  
+ 	 console.log("6-9 캡슐화");
+ 	 var Person9 = function(arg){
+ 		var name = arg ? arg : "jsj";
+ 		
+ 		this.getName = function(){
+ 			return name;
+ 		}
+ 		
+ 		this.setName = function(arg){
+ 			name = arg;
+ 		}
+ 	 };
+ 	 
+ 	 var me9 = new Person9();
+ 	 console.log(me9.getName());
+ 	 me9.setName("iamjsj");
+ 	 console.log(me9.getName());
+ 	 console.log(me9.name);
+ 	 
+ 	 
+ 	 
+ 	/*
+  	 * 6-10
+  	 */
+  	 
+  	 
+  	 console.log("6-10");
+ 	 var Person10 = function(arg){
+ 		var name = arg ? arg : "jsj";
+ 		
+		return {
+			getName : function() {
+				return name;
+			},
+			setName : function(arg) {
+				name = arg;
+			}
+		};
+	}
+
+	var me10 = Person10();
+	console.log(me10.getName());
+	me10.setName("iamjsj");
+	console.log(me10.getName());
+	console.log(me10.name);
+	
+	
+	/*
+  	 * 6-11
+  	 * 접근하는 private 멤버가 객체나 배열이면 얕은 복사로 참조만을 반환하므로 사용자가 이후 이를 쉽게 변경 할 수 있다.
+  	 */
+  	 
+  	 var ArrCreate11 = function(arg){
+		var arr = [1,2,3];
+		
+		return{
+			getArr:function(){
+				return arr;
+			}
+		};
+	}
+	
+	var obj11 = ArrCreate11();
+	var arr11 = obj11.getArr();
+	arr11.push(5);
+	console.log(obj11.getArr());//(출력값) [1,2,3,5];
+	
+	
+	
+	/*
+  	 * 6-12
+  	 * 이 예제에서 사용자가 반환받은 객체는 Person 함수 객체의 프 로토타입에는 접근할 수 없다는 단점이 있다. 
+  	 * 이는 Person을 부모로 하는 프로토타입을 이용한 상속을 구현하기가 용이하지 않다는 것을 의미한다. 
+  	 * 이를 보완하려면 객체를 반환하는 것이 아닌, 함수를 반환하는 것이 좋다.
+  	 */
+  	 
+  	 
+  	 console.log("6-12");
+ 	 var Person12 = function(arg){
+ 		var name = arg ? arg : "jsj";
+ 		
+ 		var Func = function(){}
+ 			Func.prototype = {
+				getName : function() {
+					return name;
+				},
+				setName : function(arg) {
+					name = arg;
+				}
+			};
+ 			return Func;
+	}();
+
+	var me12 = new Person12();
+	console.log(me12.getName());
+	
+	
+	/*
+  	 * 6.4         객체지향 프로그래밍응용 예제
+  	 * 6.4.1     클래스의 기능을 가진 subClass 함수 
+  	 * 6.4.1.1 subClass 함수 
+  	 * 함수의 프로토타입 체인 
+  	 * extend 함수 
+  	 * 인스턴스를 생성할 때 생성자 호출(여기서는 생성자를 _init 함수로 정한다.)
+  	 */
+  	 
+  	 
+  	/* (1) 자식 클래스 (함수 객체) 생성 */
+  	/* (2) 생성자 호출 */ 
+  	/* (3) 프로토타입 체인을 활용한 상속 구현 */ 
+  	/* (4) obj를 통해 들어온 변수 및 메서드를 자식 클래스에 추가 */ 
+  	/* (5) 자식 함수 객체 반환 */
+  	
+  	/*
+  	 * 6-15
+  	 */
+  	 
+  	var subClass = function() {
+  		var F = function() {};
+  		
+  		var subClass = function(obj) {
+  		
+  			//var parent = this === global ? Function.prototype : this.prototype;
+  			var parent =  this === global ? Function : this;
+
+  			var child = function() {
+  				//console.log("calling const");
+  				var _parent = child.parent_constructor;
+  				
+  				if (_parent && _parent !== Function) {
+  					_parent.apply(this, arguments);
+  				}
+  							
+  				/*
+  				if (parent.hasOwnProperty("_init")) {
+  					parent._init.apply(this, arguments);
+  				}
+  				*/
+  				if (child.prototype.hasOwnProperty("_init")) {
+  					child.prototype._init.apply(this, arguments);
+  				}
+  			};
+
+  			F.prototype = parent.prototype;
+  			child.prototype = new F();
+  			child.prototype.constructor = child;
+  			child.parent = parent.prototype;
+  			child.parent_constructor = parent;
+  			child.subClass = arguments.callee;
+
+  			for (var i in obj) {
+  				if (obj.hasOwnProperty(i)) {
+  					child.prototype[i] = obj[i];
+  				}
+  			}
+
+  			return child;
+  		}
+  		
+  		return subClass;
+  	}();
+
+  	var person = function(arg) { 
+  		var name = undefined;
+  		
+  		return {
+  			_init : function(arg) {
+  				name = arg ? arg : "zzoon";
+  			},
+  			getName : function() {
+  				return name;
+  			},
+  			setName : function(arg) {
+  				name = arg;
+  			}
+  		};
+  	}
+
+  	Person = subClass(person());
+  	var iamhjoo = new Person("iamhjoo");
+  	console.log(iamhjoo.getName());
+
+  	Student = Person.subClass();
+  	var student = new Student("student");
+  	console.log(student.getName());
 </script>
 </html>
