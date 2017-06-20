@@ -192,7 +192,7 @@ console.log(fact(20));
 
  console.log("7-4");
  var fibo = function(){
-	var cache = {'0':0,'1',1};
+	var cache = {'0':0,'1':1};
 	
 	var func = function(n){
 		if(typeof(cache[n]) === 'number'){
@@ -251,6 +251,113 @@ console.log(fact4(10));
 console.log(fibo4(10));
 
 
+/*
+ * 7.3.1 함수 적용
+ * 7.3.2 커링
+ * 7-7
+ * 커링이란 특정 함수에서 정의된 인자의 일부를 넣어 고정시키고, 나머지를 인자로 받는 새로운 함 수를 만드는 것을 의미한다.
+ */
 
+console.log("7-7");
+function calculate6(a,b,c){
+	return a*b+c;
+}
+
+function curry6(func){
+	var args = Array.prototype.slice.call(arguments,1);
+	console.log(args);
+	return function(){
+		console.log(args.concat(Array.prototype.slice.call(arguments)));
+		return func.apply(null,args.concat(Array.prototype.slice.call(arguments)));
+	}
+}
+
+var new_func1 = curry6(calculate6,1);
+console.log(new_func1(2,3));//(출력값) 5
+
+var new_func2 = curry6(calculate6,1,3);
+console.log(new_func2(3));//(출력값) 6
+
+
+
+/*
+ * 7-8 첫번쨰 인자와 세번쨰인자 고정
+ */
+
+
+console.log("7-8");
+function calculate7(a,b,c){
+	return a*b+c;
+}
+
+function curry7(func){
+	var args = Array.prototype.slice.call(arguments,1);
+	console.log(args);
+	return function(){
+		var arg_idx = 0;
+		console.log(arguments);
+		for(var i = 0;i < args.length && arg_idx < arguments.length; i++){
+			if(args[i] === undefined){
+				args[i] = arguments[arg_idx++];
+			}
+		}
+		return func.apply(null,args);
+	}
+}
+
+var new_func1 = curry7(calculate6,1,undefined,4);
+console.log(new_func1(3));//(출력값) 5
+
+
+/*
+ * 7-9 bind
+ */
+
+
+console.log("7-9");
+
+var print_all = function(arg){
+	for(var i in this)     console.log(i+" : "+this[i]);
+	for(var i in arguments)console.log(i+" : "+arguments[i]);
+}
+
+var myobj = {name : "zzoon"};
+
+var myfunc = print_all.bind(myobj);
+myfunc();//"name : zzoon"
+
+var myfunc1 = print_all.bind(myobj,"iamjoo","others");
+myfunc1("insidejs");
+
+
+/*
+ * 7-9 래퍼
+ * wrapper란 쉽게 말하면 특정 함수를 자신의 함수로 덮어쓰는 것을 말한다.
+ * 다형성의 특성을 살린 오버라이드와 비슷하다
+ */
+
+ console.log("7-10");
+ function wrap(object,method,wrapper){
+	var fn = object[method];
+	return object[method] = function(){
+		return wrapper.apply(this,[fn].concat(
+	    //return wrapper.apply(this,[fn.bind(this)].concat(
+	    	Array.prototype.slice.call(arguments)		
+		));
+	};
+}
+
+Function.prototype.original = function(value){
+	this.value = value;
+	console.log("value : " +this.value);
+}
+
+var mywrap = wrap(Function.prototype,"original",function(orig_func,value){
+	this.value = 20;
+	orig_func(value);
+	console.log("wrapper value : "+this.value);
+});
+		
+var obj = new mywrap("zzoon");
 </script>
 </html>
